@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cost Comparison Calculator</title>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    body {
+  background: #fafbfc;
+  font-family: 'Inter', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+.container {
+  background: #fff;
+  margin: 30px auto;
+  max-width: 1120px;
+  border-radius: 18px;
+  box-shadow: 0 8px 36px #e7e7e7;
+  padding: 32px 24px;
+}
+
+.input-row {
+  margin: 1rem 0 1.2rem 0;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.input-row input {
+  width: 80px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: #fff9db;
+}
+
+.main-calc {
+  display: flex;
+  gap: 36px;
+  margin-top: 10px;
+}
+
+.table-section {
+  flex: 2 1 0%;
+}
+
+.side-summary {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 18px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  background: #f7f9fc;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table th, table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #ebebeb;
+}
+
+table th {
+  background: #eaeaea;
+  font-size: 1.03rem;
+  font-weight: 700;
+}
+
+.input-yellow {
+  width: 72px;
+  background: #ffe787;
+  border: 1px solid #d1a403;
+  color: #654900;
+  font-size: 1.06rem;
+  font-weight: 600;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.input-blue {
+  width: 70px;
+  background: #dff1fd;
+  border: 1px solid #229af7;
+  color: #0558b0;
+  font-size: 1.06rem;
+  font-weight: 600;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.note {
+  font-size: 0.93rem;
+  color: #555;
+  margin-top: 8px;
+}
+
+.cost-summary {
+  margin-top: 18px;
+  background: #f7f9fc;
+  border-radius: 7px;
+  padding: 16px 20px 10px 20px;
+  font-size: 1.08rem;
+}
+
+.cost-summary .row-label {
+  font-weight: 700;
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+.cost-summary .sub {
+  font-weight: 500;
+  font-size: 0.98rem;
+  margin-top: 5px;
+}
+
+.cost-summary .row-values {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2px;
+  margin-bottom: 4px;
+}
+
+.cost-summary .highlight {
+  color: #ffb200;
+  font-weight: 700;
+  font-size: 1.12rem;
+}
+
+.cost-summary .gray {
+  color: #888;
+  font-size: 0.96rem;
+}
+
+.total-costs {
+  display: flex;
+  gap: 22px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 14px;
+  font-size: 1.09rem;
+  font-weight: 600;
+}
+
+.total-costs span {
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-right: 4px;
+}
+
+.total-costs span:first-child {
+  background: #ffe787;
+  color: #744d00;
+}
+.total-costs span:nth-child(2) {
+  background: #fff7cc;
+  color: #755300;
+}
+.total-costs span:nth-child(3) {
+  background: #dff1fd;
+  color: #0558b0;
+}
+.total-costs span:nth-child(4) {
+  background: #e6f3fa;
+  color: #01567f;
+}
+
+.card {
+  border-radius: 20px;
+  box-shadow: 0 2px 14px #eaeaea;
+  padding: 38px 22px 18px 22px;
+  text-align: center;
+  font-size: 1.11rem;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.card.yellow {
+  background: #ffe787;
+  color: #2b1c00;
+  border: 2px solid #fae19c;
+}
+
+.card.blue {
+  background: #13375c;
+  color: #fff;
+  border: 2px solid #4075a7;
+}
+
+.card .big {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.card .savings {
+  font-size: 1.04rem;
+  font-weight: 400;
+  margin-top: 24px;
+  color: #ffe787;
+}
+
+a { color: #229af7; }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <h4>Please enter your current number of agents and cost in yellow boxes below.</h4>
+  <div class="input-row">
+    <label>Number of Agents</label>
+    <input type="number" id="agents" min="1" value="8" />
+  </div>
+  <div class="main-calc">
+    <div class="table-section">
+      <table>
+        <thead>
+          <tr>
+            <th>Current Resources</th>
+            <th>In-House (USA)</th>
+            <th>Current Costs (Monthly)</th>
+            <th>Touchstone Rate* (Offshore)</th>
+            <th>Touchstone Costs (Monthly)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Agent Hourly Wage</td>
+            <td><input class="input-yellow" id="wage_agent" value="19.5"></td>
+            <td><span id="cost_agent_month"></span></td>
+            <td><input class="input-blue" id="touchstone_rate" value="11"></td>
+            <td rowspan="5" id="touchstone_costs" style="font-weight:600;font-size:1.1rem;background:#f7f9fc;"></td>
+          </tr>
+          <tr>
+            <td>Team Lead Hourly Wage</td>
+            <td><input class="input-yellow" id="wage_team" value="24.75"></td>
+            <td><span id="cost_team_month"></span></td>
+            <td rowspan="4"></td>
+          </tr>
+          <tr>
+            <td>Supervisor Hourly Wage</td>
+            <td><input class="input-yellow" id="wage_supervisor" value="34.25"></td>
+            <td><span id="cost_supervisor_month"></span></td>
+          </tr>
+          <tr>
+            <td>Trainer Hourly Wage</td>
+            <td><input class="input-yellow" id="wage_trainer" value="34.5"></td>
+            <td><span id="cost_trainer_month"></span></td>
+          </tr>
+          <tr>
+            <td>Employer Costs (FICA, Benefits, etc.)</td>
+            <td><input class="input-yellow" id="wage_employer" value="4.48"></td>
+            <td><span id="cost_employer_month"></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        *Touchstone rates vary based upon volume and tasks. Contact <a href="mailto:mmayer@touchstonebpo.com">mmayer@touchstonebpo.com</a> for custom pricing proposal.
+      </div>
+
+      <div class="cost-summary">
+        <div class="row-label">TOTAL LABOR COST</div>
+        <div class="row-values">
+          <span id="labor_cost" class="highlight"></span>
+          <span id="touchstone_cost_month" class="highlight"></span>
+        </div>
+        <div class="row-label sub">Office Space (125 sq ft)</div>
+        <div class="row-values">
+          <span>$4,290</span>
+          <span class="gray">Included in Agent Costs</span>
+        </div>
+        <div class="row-label sub">Hardware (PC, Phone, Headset, Servers)</div>
+        <div class="row-values">
+          <span>$2,997</span>
+          <span class="gray">Included in Agent Costs</span>
+        </div>
+        <div class="row-label sub">Software (Omni-Channel, Phone, Email)</div>
+        <div class="row-values">
+          <span>$1,907</span>
+          <span class="gray">Included in Agent Costs</span>
+        </div>
+      </div>
+      <div class="total-costs">
+        <span>TOTAL IN-HOUSE COST</span>
+        <span id="total_inhouse_cost"></span>
+        <span>TOUCHSTONE COST</span>
+        <span id="total_touchstone_cost"></span>
+      </div>
+    </div>
+    <div class="side-summary">
+      <div class="card yellow">
+        <div>TOTAL<br/>IN-HOUSE COSTS</div>
+        <div class="big" id="side_inhouse"></div>
+      </div>
+      <div class="card blue">
+        <div>TOTAL<br/>TOUCHSTONE COSTS</div>
+        <div class="big" id="side_touchstone"></div>
+        <div class="savings">
+          Savings<br>
+          <span id="savings"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function currency(n) {
+  return "$" + Number(n).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+function calculate() {
+  const agents = parseInt(document.getElementById('agents').value) || 0;
+
+  // Inputs
+  const wage_agent = parseFloat(document.getElementById('wage_agent').value) || 0;
+  const wage_team = parseFloat(document.getElementById('wage_team').value) || 0;
+  const wage_supervisor = parseFloat(document.getElementById('wage_supervisor').value) || 0;
+  const wage_trainer = parseFloat(document.getElementById('wage_trainer').value) || 0;
+  const wage_employer = parseFloat(document.getElementById('wage_employer').value) || 0;
+  const touchstone_rate = parseFloat(document.getElementById('touchstone_rate').value) || 0;
+
+  // Monthly (assume 160 hours per agent)
+  const agent_month = wage_agent * 160 * agents;
+  const team_month = wage_team * 160 * 1; // 1 Team Lead for all
+  const supervisor_month = wage_supervisor * 160 * 1; // 1 Supervisor
+  const trainer_month = wage_trainer * 160 * 1; // 1 Trainer
+  const employer_month = wage_employer * 160 * agents;
+
+  // Fill monthly costs
+  document.getElementById('cost_agent_month').innerText = currency(agent_month);
+  document.getElementById('cost_team_month').innerText = currency(team_month);
+  document.getElementById('cost_supervisor_month').innerText = currency(supervisor_month);
+  document.getElementById('cost_trainer_month').innerText = currency(trainer_month);
+  document.getElementById('cost_employer_month').innerText = currency(employer_month);
+
+  // Total labor cost (all monthly costs)
+  const labor_cost = agent_month + team_month + supervisor_month + trainer_month + employer_month;
+  document.getElementById('labor_cost').innerText = currency(labor_cost);
+
+  // Office space + Hardware + Software (fixed)
+  const office_space = 4290;
+  const hardware = 2997;
+  const software = 1907;
+
+  const total_inhouse_cost = labor_cost + office_space + hardware + software;
+  document.getElementById('total_inhouse_cost').innerText = currency(total_inhouse_cost);
+
+  // Touchstone monthly cost (offshore)
+  const touchstone_cost_month = touchstone_rate * 160 * agents;
+  document.getElementById('touchstone_cost_month').innerText = currency(touchstone_cost_month);
+  document.getElementById('touchstone_costs').innerText = currency(touchstone_cost_month);
+
+  // Display summary cards
+  document.getElementById('side_inhouse').innerText = currency(total_inhouse_cost);
+  document.getElementById('side_touchstone').innerText = currency(touchstone_cost_month);
+
+  // Savings calculation: (inhouse - touchstone) / inhouse * 100
+  let savings_pct = 0;
+  if (total_inhouse_cost > 0) {
+    savings_pct = Math.round(((total_inhouse_cost - touchstone_cost_month) / total_inhouse_cost) * 100);
+  }
+  document.getElementById('savings').innerText = savings_pct + "%";
+  document.getElementById('total_touchstone_cost').innerText = currency(touchstone_cost_month);
+}
+
+// Attach events
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('input', calculate);
+});
+
+// Initial calculation
+calculate();
+
+</script>
+<script src="script.js"></script>
+</body>
+</html>

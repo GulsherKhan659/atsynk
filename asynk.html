@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Atsynk Pricing Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      padding: 20px;
+      max-width: 450px;
+      margin: auto;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      color: #005c99;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #bbb;
+      box-sizing: border-box;
+    }
+    .result {
+      font-weight: bold;
+      font-size: 1.3em;
+      margin-top: 25px;
+      background: #e6f7ff;
+      color: #004d66;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Atsynk Pricing Calculator</h2>
+
+  <label for="agents">Agents (FTEs)</label>
+  <input type="number" id="agents" value="10" min="1">
+
+  <label for="hours">Hours per Agent (monthly)</label>
+  <input type="number" id="hours" value="160" min="1">
+
+  <label for="rate">Hourly Rate ($)</label>
+  <input type="number" id="rate" value="10" step="0.01" min="0">
+
+  <label for="discount">Discount ($)</label>
+  <input type="number" id="discount" value="0" min="0">
+
+  <div class="result">
+    Total Monthly Cost: $<span id="totalCost">0.00</span>
+  </div>
+
+  <script>
+    function recalc() {
+      const agents = parseFloat(document.getElementById('agents').value) || 0;
+      const hours = parseFloat(document.getElementById('hours').value) || 0;
+      const rate = parseFloat(document.getElementById('rate').value) || 0;
+      const discount = parseFloat(document.getElementById('discount').value) || 0;
+
+      const labor = agents * hours * rate;
+      const total = labor - discount;
+      document.getElementById('totalCost').innerText = total.toLocaleString(undefined, {
+        minimumFractionDigits: 2, maximumFractionDigits: 2
+      });
+    }
+
+    document.querySelectorAll("input").forEach(el => el.addEventListener("input", recalc));
+    recalc();
+  </script>
+</body>
+</html>
